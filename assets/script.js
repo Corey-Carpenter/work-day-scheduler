@@ -1,5 +1,6 @@
 var eventsData;
 
+//function to set the color of blocks depending on the time of day it is
 function setHourColors() {
   var now = dayjs();
 
@@ -13,6 +14,7 @@ function setHourColors() {
   }
 }};
 
+//loads data from local storage
 function loadStoredData() {
   var eventsData = JSON.parse(localStorage.getItem("calendarEvents"));
   //sets them to blank if there's no data
@@ -27,35 +29,34 @@ function loadStoredData() {
         hour15: "",
         hour16: "",
         hour17: "",
-     }
-  }
-  //TODO Load existing data from local storage
-}
+     };
+  };
+};
 
 function handleSaveClick(event) {
   //grab data from HTML
-  var saveButton = $(event.target);
+  var hourBlock = $(event.target).parent();
   var value = hourBlock.children("textarea").val();
   var hour = hourBlock.attr("id").split("-")[1];
 
 //modify our data object
   eventsData["hour" + hour] = value;
 
-  //TODO store this hour's data in local storage
+  //store in local storage
   localStorage.setItem("calendarEvents", JSON.stringify(eventsData));
-}
+};
 
-$(function() {
-  setHourColors();
-  loadStoredData();
-});
-
+//when save buttons are clicked, it activates handleSaveClick function
 $(".saveBtn").on("click", handleSaveClick);
 
+//calls my functions
+$(function() {
+  loadStoredData();
+  setHourColors();
+});
 
 
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
-//function to set the color of blocks depending on the time of day it is
